@@ -6,7 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>My first Lavarel experience!! yey!</h1>
-    <h2><?= config('app.name') ?></h2>
+    Hello
 </body>
 </html>
