@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -42,5 +43,33 @@ class MovieController extends Controller
         
         // dd($cast);
         return view('movies.detail', compact('shawshank', 'cast'));
+    }
+
+    public function index()
+    {
+        $movies = Movie::query()
+                    ->orderBy('rating', 'desc')
+                    ->limit(20)
+                    ->where('votes_nr', '>=', 10000)
+                    ->get();
+
+        return view('movies.index', compact('movies'));
+    }
+
+    public function search()
+    {
+        $searchItem = $_GET['search'] ?? null;
+
+        if ($searchItem == null) {
+            return view('movies.search', compact('searchItem'));
+        } else {    
+            $search = DB::select(
+                "SELECT `name`
+                FROM `movies`
+                WHERE `name` LIKE '%$searchItem%'"
+                );
+            // dd($search);
+            return view('movies.search', compact('search', 'searchItem'));
+        }
     }
 }
